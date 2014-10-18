@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="remark,remarkjs,markdown,slideshow,presentation" />
+    <meta name="description" content="A simple, in-browser, markdown-driven slideshow tool." />
+    <title>Ce que je n'aime pas (plus) dans Python</title>
+    <link rel="stylesheet" type="text/css" href="theme.css">
+  </head>
+  <body>
+    <textarea id="source">
+
+name: inverse
+layout: true
+class: center, middle, inverse
+
+---
+
+# Ce que je n'aime pas (plus) dans Python
+## Sébastien Douche / @sdouche
+
+### https://github.com/sdouche/presentation-python-7ans
+
+---
+layout: false
+
+.left-column[
+  ## Qui suis je ?
+]
+.right-column[
+  40 ans. Français. J'aime comprendre et résoudre des problèmes.
+
+- Geek depuis 1984
+
+- Fan de Logiciels Libres depuis 1995
+
+- Développeur (Python, Go, Dart, Rust)
+
+- Sysadmin (Linux / BSD)
+
+- Ex-responsable technique chez un éditeur logiciel français (2007-2014)
+
+- Intéressé par le Lifehacking
+
+- Adore les jeux de sociétés modernes
+
+- Motard (Honda CBR RR)
+
+- Aime l'humour noir, le second degré et les blagues pourries
+]
+
+---
+template: inverse
+
+# Objectif de cette présentation
+
+---
+class: center, middle
+
+## Donner des pistes de réflexion sur vos pratiques de développement.
+
+---
+template: inverse
+
+# Introduction
+
+---
+class: center, middle
+
+## En 2007, j'intègre un éditeur logiciel.
+
+---
+
+## 2007-2014 : 7 ans de gestion d'un "gros" logiciel
+
+5 critères qui ont changé ma vision du développement logiciel :
+
+1. la taille du code (~250k SLOC Python / C)
+2. la durée (7 ans)
+3. nombre de développeurs (~12 avec rotation)
+4. importance du code métier
+5. le coût de la correction logiciel (release, annonce, Q/A...)
+
+???
+Faire la liste des étapes pour corriger chez un client :
+1. Développeur corrige
+2. Revue de code
+3. Release
+4. Q/A
+5. Formation interne
+6. Communication
+7. Livraison client
+8. Migration du client
+
+---
+class: center, middle
+
+## De ce projet, j'en ai tiré plusieurs .blue[leçons] importantes.
+
+---
+class: center, middle
+
+## En voici une : Vous connaissez sûrement l'expression
+## .blue["Eat your own dog food"]
+
+---
+class: center, middle
+
+## Je vous propose plutôt...
+
+---
+class: center, middle
+
+## Eat your own .large[.red[shit]]
+
+---
+template: inverse
+
+# Exception
+
+---
+class: center, middle
+
+## Avoir un code solide est un travail complexe, surtout en Python (typage faible), et les exceptions n'aident pas.
+
+???
+J'ai appris l'objet avec Eiffel (98) avec la notion de programmation par contrat.
+
+---
+class: center, middle
+
+## Exemple : Prendre un code Python de 50 lignes et .blue[lister de mémoire] toutes les exceptions en jeu.
+
+---
+class: center, middle
+
+## Souci 1
+## Les exceptions sont invisibles.
+
+---
+class: center, middle
+
+## Souci 2
+## La forme canonique est de ne pas gérer les erreurs.
+
+---
+## Exemple de code Go et Python
+
+## Python
+```python
+def fib(n):
+    a, b = 0, 1
+    while a < n:
+        print(a, end=' ')
+        a, b = b, a+b
+    print()
+fib(1000)
+
+```
+
+## Go
+```go
+err := out.Encode(m)
+if err != nil {
+    log.Fatal(err)
+    }
+```
+
+???
+- La 1ere remarque d'un dev Python (moi y compris) devant un code Go est de dire "beurk"
+- A -> B -> C, si C à un probleme seul C ou B est capable de comprendre, rarement A.
+
+---
+class: center, middle
+
+## Souci 3
+## La documentation est pauvre.
+
+---
+class: center, middle
+
+## Souci 4
+## Sans bonne gestion préalable, le refactoring augmente drastiquement le risque de lever des exceptions.
+
+---
+class: beauty, center, middle
+
+# Mes conseils beauté
+
+???
+Halte au cheveux cassants et aux pointes sèches.
+
+---
+class: center, middle
+
+## Prenez la gestion d'erreurs au sérieux !
+## (= test unitaire)
+
+---
+class: center, middle
+
+## Un module doit définir ses propres exceptions (qui peuvent hériter des exceptions de base).
+
+---
+class: center, middle
+
+## Minimiser le code dans un bloc try/except (granularité).
+---
+template: inverse
+
+# Typage
+
+---
+class: middle
+
+## Il est souvent utile de spécialiser des fonctions :
+
+- documentation
+- aide à l'écriture
+- aide au débug
+
+Ex : URI, IP, fichier...
+
+---
+## Conférence de Bob Ippolito
+
+Bob Ippolito a fait une conférence "What Python can learn from Haskell" :
+
+```python
+def main():
+    """What is this, JavaScript?"""
+    print(1 + "1")
+
+if __name__ == '__main__':
+    main()
+```
+.footnote[http://bob.ippoli.to/python-haskell-ep2014/#/python-nonsense]
+
+---
+
+Les outils de qualité de code sont médiocres (Pylint, pep8, pep257, PyChecker, PyFlakes, Flake8...).
+Seul Pycharm trouve l'erreur :
+
+![Default-aligned image](img/pycharm2.png)
+
+---
+## Exemple 1
+
+Dart est un langage dynamique avec un typage "documentaire" :
+
+![Default-aligned image](img/dart1.png)
+![Default-aligned image](img/dart2.png)
+
+---
+
+## Exemple 2
+
+Pycharm vérifie la signature d'une fonction à l'aide du docstring :
+
+![Default-aligned image](img/pycharm.png)
+
+.footnode[http://www.jetbrains.com/pycharm/webhelp/type-hinting-in-pycharm.html]
+
+---
+class: beauty, center, middle
+
+# Mes conseils beauté
+
+---
+Documentez votre code :
+
+```python
+send_message(sender, recipient, message_body, [priority=1]):
+    """
+    Send a message to a recipient
+
+    :param str sender: The person sending the message
+    :param str recipient: The recipient of the message
+    :param str message_body: The body of the message
+    :param priority: The priority of the message, can be a number 1-5
+    :type priority: integer or None
+    :return: the message id
+    :rtype: int
+    :raises ValueError: if the message_body exceeds 160 characters
+    :raises TypeError: if the message_body is not a basestring
+    """
+```
+
+http://sphinx-doc.org/domains.html#the-python-domain
+---
+## Résultat Sphinx
+
+Sphinx comprend parfaitement ce format :
+
+![Default-aligned image](img/sphinx.png)
+
+**Note** : Si on préfère le format Google, il existe l'extension Napoleon (intégré dans Sphinx 1.3).
+
+.footnote[http://sphinxcontrib-napoleon.readthedocs.org/en/latest/index.html]
+
+---
+template: inverse
+
+# Factorisation extrême
+
+---
+## Python «pousse» à factoriser son code, ce qui donne :
+
+- un code moins expressif
+- devient plus complexe (structures supplémentaires)
+- plus difficile à débugguer
+- nécessité d'écrire plus de tests unitaires
+
+---
+
+## Exemple trivial mais représentatif
+
+Le mal :
+
+```python
+if MyData:
+    // Do something
+```
+
+Le bien :
+
+```python
+if MyData == []:
+    // Do something
+```
+---
+
+Conférence «Discovering Python» de David Beazley (Pycon US 2014) :
+
+![Default-aligned image](img/discovering-python.png)
+
+.footnote[http://pyvideo.org/video/2645/discovering-python]
+
+???
+Mouvements autour de moi de bcp de dev (Scala, Java, Python...) de revenir à des choses plus simples.
+
+---
+class: beauty, center, middle
+
+# Mes conseils beauté
+
+---
+
+## La simplicité a du bon :
+
+- ne tentez pas la concision à tout prix
+- remplacez la généricité non utile par de la spécialisation
+- utilisez la composition
+
+---
+template: inverse
+
+# Doctest
+
+---
+class: center, middle
+
+## Doctest est de la doc testable, pas des tests sous forme de doc !
+
+---
+
+## Doctest ne remplace pas unittest :
+
+- fragile ! La sortie n'est pas prévisible
+- il faut extraire correctement l'information
+- il faut simuler l'interpréteur (>>>, ...)
+- la gestion des erreurs est différente
+- pas de notion de fonctions de test, de Set up / Tear down
+- plus possible de débugguer avec print
+- n'est fait que pour tester les cas nominaux
+- verbeux
+
+---
+class: beauty, center, middle
+
+# Mes conseils beauté
+
+---
+## doctest est utile dans 2 cas :
+
+- documenter les cas nominaux
+- TDD en «mode exploratoire»
+
+---
+class: center, middle
+
+## Priviégiez test.py si vous n'aimez pas unittest
+
+---
+template: inverse
+
+# Packaging & distribution
+
+---
+class: center, middle
+
+## Si le projet ne contient que des packages pur Python, «facile» !
+
+---
+
+## La présence de modules C complexifie par x10 la livraison.
+
+Si vous voulez livrer les sources :
+
+- nécessite la stack C sur la machine cible
+
+Si vous voulez livrer des binaires :
+
+- dépend de la compilation de Python (compilateur, UCS2/UCS4)
+- dépend du compilateur
+
+**Note** : Trop de compilateurs sous Linux/BSD, vous devez livrer des packages sources.
+
+---
+class: center, middle
+
+## Format Eggs, puis Wheel, puis Conda ?
+
+---
+class: beauty, center, middle
+
+# Mes conseils beauté
+
+---
+
+# Apprenez :
+
+- pyenv
+- Distutils.red[*]
+- Setuptools.red[*]
+- Pip
+- Virtualenv / pew
+- Buildout.red[*]
+- le format Wheel
+- devpi
+- PyPI
+
+.footnote[.red[*] Surtout ceux là]
+---
+template: inverse
+
+# Performance
+
+---
+
+## Le nombre d'interpréteurs alternatifs donne une indication de l'ampleur du «problème».
+
+- HOPE
+- PyPy
+- Cython
+- Shedskin
+- Nuitka
+- Numba
+- Stackless Python
+- Pyston
+- Psycho
+
+Avec Python 2.x, chaque nouvelle version apportait un gain de performance (entre 5 et 20%). Avec Python 3.x, c'est l'inverse :(.
+
+---
+class: center, middle
+
+## Ne pas avoir besoin de performance est un .blue[leurre].
+
+---
+class: center, middle
+
+## Disposer de performances permet de changer ses pratiques.
+
+???
+Exemples : Git, temps tests unitaires, JS.
+
+---
+
+## La gestion mémoire redevient primordiale
+
+Évolution sur les 20 ans dernières années :
+
+- performance CPU +15-20%
+- performance RAM +2-11%
+
+Relation 1 - 100 entre CPU et RAM.
+
+---
+
+## Python utilise trop de RAM
+
+Taille des structures (64 bits) :
+
+- int : 24
+- float : 24
+- long: 30 + (2*digits)
+- str: 40 + longueur
+- unicode: 28 + (4*longueur)
+- list: 72 + (8*longueur)
+- tuple: 64 + (8*longueur)
+- dict: 280 + (24*entrée)
+
+---
+
+class: center, middle
+
+## Depuis 15 ans, nous avons changé d'ère :
+
+Mono-coeur &#10140; Multi-coeur
+
+---
+
+IBM vient de sortir le processeur POWER8 (12 cores - 96 threads) :
+
+![Default-aligned image](img/power8.png)
+
+---
+
+Online Labs sort un serveur ARM (4 coeurs - 2Go de RAM) :
+
+![Default-aligned image](img/online.png)
+
+---
+
+template: inverse
+
+# Fuite mémoire
+
+---
+
+## Type générique + modules C = cauchemar
+
+```sql
+                       types |   # objects |   total size
+============================ | =========== | ============
+                        dict |         546 |    953.30 KB
+                         str |        8270 |    616.46 KB
+                        list |         127 |    529.44 KB
+                       tuple |        5021 |    410.62 KB
+                        code |        1378 |    161.48 KB
+                        type |          70 |     61.80 KB
+          wrapper_descriptor |         508 |     39.69 KB
+  builtin_function_or_method |         515 |     36.21 KB
+                         int |         900 |     21.09 KB
+           method_descriptor |         269 |     18.91 KB
+                     weakref |         177 |     15.21 KB
+....
+```
+---
+class: beauty, center, middle
+
+# Mes conseils beauté
+
+---
+
+class: center, middle
+
+## Lancez toutes opérations couteuses en mémoire dans un process à part.
+
+---
+
+template: inverse
+
+# Conclusion
+
+---
+class: center, middle
+
+## Python permet de prototyper rapidement et efficacement .blue[&#9829;].
+
+---
+class: center, middle
+
+## Mais ces défauts se font ressentir au bout de 4 ans.
+
+---
+
+## Cas idéal
+
+Pour moi, c'est :
+- < 20k SLOC
+- petite équipe
+- maximiser l'utilisation de librairies externes
+- lenteur acceptée
+
+---
+class: center, middle
+
+## Une métrique significative : le nombre de couches (outils, librairies, frameworks...).
+
+**Note** : En 98, j'utilisais Python + Vim.
+
+???
+
+Anectode avec Javaiste.
+
+---
+name: last-page
+template: inverse
+
+## That's all folks!
+
+    </textarea>
+    <script src="remark-0.7.0.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      var hljs = remark.highlighter.engine;
+    </script>
+    <script src="remark.language.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      var slideshow = remark.create({
+          highlightStyle: 'monokai',
+          highlightLanguage: 'remark'
+        }) ;
+    </script>
+  </body>
+</html>
