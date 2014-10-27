@@ -4,7 +4,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="keywords" content="remark,remarkjs,markdown,slideshow,presentation" />
     <meta name="description" content="A simple, in-browser, markdown-driven slideshow tool." />
-    <title>Ce que je n'aime pas (plus) dans Python</title>
+    <title>Retour sur 7 ans utilisation de Python</title>
     <link rel="stylesheet" type="text/css" href="theme.css">
   </head>
   <body>
@@ -16,7 +16,7 @@ class: center, middle, inverse
 
 ---
 
-# Ce que je n'aime pas (plus) dans Python
+# Retour sur 7 ans d'utilisation de Python
 ## Sébastien Douche / @sdouche
 
 ### https://github.com/sdouche/presentation-python-7ans
@@ -57,7 +57,7 @@ template: inverse
 ---
 class: center, middle
 
-## Donner des pistes de réflexion sur vos pratiques de développement.
+## Donner des pistes de réflexion sur Python et sur vos pratiques de développement
 
 ---
 template: inverse
@@ -67,21 +67,79 @@ template: inverse
 ---
 class: center, middle
 
-## En 2007, j'intègre un éditeur logiciel.
+## En 2007, j'intègre un éditeur logiciel
 
 ---
+class: center, middle
+## Plusieurs .blue[critères] ont changés ma vision du développement logiciel
 
-## 2007-2014 : 7 ans de gestion d'un "gros" logiciel
+---
+## critères (1)
 
-5 critères qui ont changé ma vision du développement logiciel :
+La taille du code (~250k SLOC) :
 
-1. la taille du code (~250k SLOC Python / C)
-2. la durée (7 ans)
-3. nombre de développeurs (~12 avec rotation)
-4. importance du code métier
-5. le coût de la correction logiciel (release, annonce, Q/A...)
+- 50% C
+- 50% Python
+
+Plus de 1M de lignes de code sur les 7 ans.
+
+---
+## critères (2)
+
+La durée : 7 ans sur le même projet.
+
+---
+## critères (3)
+
+Le nombre de développeurs, en ajoutant la notion de «rotation» :
+
+Quand un développeur A relit un code du développeur B qui a modifié le code d'un développeur C. Mais ni B ni C ne sont enc
+ore présents.
+
+Pire, il se peut que A n'ai jamais connu B et C.
+
+---
+## critères (4)
+
+L'importance du code métier.
+
+Être éditeur logiciel signifie écrire la plupart de ses librairies métier. Quand un code A appelle un code B, qui appelle un code C, qui appelle un code D, il y a de fortes chances que vous (vous éditeur) soyez l'auteur du code A, B et C.
+
+---
+## critères (5)
+
+Le cout de la correction logicielle :
+
+- modification du code
+- modification des tests
+- relecture du code
+- release interne
+- Q/A
+- release officielle
+- marketing
+- livraison
+- upgrade client
+
+---
+## critères (6)
+
+La contrainte d'une sortie regulière :
+
+- une par mois en interne
+- une version officielle par trimestre
+
+---
+## critères (7)
+
+La difficulté de concevoir des *appliances* (MAJ à distance sans prise en main).
+
+---
+## critères (8)
+
+La difficulté d'avoir de grosses contraintes de tests :
 
 ???
+
 Faire la liste des étapes pour corriger chez un client :
 1. Développeur corrige
 2. Revue de code
@@ -146,7 +204,8 @@ class: center, middle
 ---
 ## Exemple de code Go et Python
 
-## Python
+C'est «pythonic» de ne pas avoir de try/except :
+
 ```python
 def fib(n):
     a, b = 0, 1
@@ -158,7 +217,8 @@ fib(1000)
 
 ```
 
-## Go
+En Go, on vérifie chaque appel :
+
 ```go
 err := out.Encode(m)
 if err != nil {
@@ -237,7 +297,6 @@ if __name__ == '__main__':
 .footnote[http://bob.ippoli.to/python-haskell-ep2014/#/python-nonsense]
 
 ---
-
 Les outils de qualité de code sont médiocres (Pylint, pep8, pep257, PyChecker, PyFlakes, Flake8...).
 Seul Pycharm trouve l'erreur :
 
@@ -252,7 +311,6 @@ Dart est un langage dynamique avec un typage "documentaire" :
 ![Default-aligned image](img/dart2.png)
 
 ---
-
 ## Exemple 2
 
 Pycharm vérifie la signature d'une fonction à l'aide du docstring :
@@ -312,7 +370,6 @@ template: inverse
 - nécessité d'écrire plus de tests unitaires
 
 ---
-
 ## Exemple trivial mais représentatif
 
 Le mal :
@@ -328,8 +385,8 @@ Le bien :
 if MyData == []:
     // Do something
 ```
----
 
+---
 Conférence «Discovering Python» de David Beazley (Pycon US 2014) :
 
 ![Default-aligned image](img/discovering-python.png)
@@ -345,11 +402,11 @@ class: beauty, center, middle
 # Mes conseils beauté
 
 ---
-
 ## La simplicité a du bon :
 
 - ne tentez pas la concision à tout prix
 - remplacez la généricité non utile par de la spécialisation
+- dupliquer du code n'est pas le «mal absolu»
 - utilisez la composition
 
 ---
@@ -363,7 +420,6 @@ class: center, middle
 ## Doctest est de la doc testable, pas des tests sous forme de doc !
 
 ---
-
 ## Doctest ne remplace pas unittest :
 
 - fragile ! La sortie n'est pas prévisible
@@ -389,7 +445,7 @@ class: beauty, center, middle
 ---
 class: center, middle
 
-## Priviégiez test.py si vous n'aimez pas unittest
+## Privilégiez py.test si vous n'aimez pas unittest
 
 ---
 template: inverse
@@ -402,7 +458,6 @@ class: center, middle
 ## Si le projet ne contient que des packages pur Python, «facile» !
 
 ---
-
 ## La présence de modules C complexifie par x10 la livraison.
 
 Si vous voulez livrer les sources :
@@ -427,7 +482,6 @@ class: beauty, center, middle
 # Mes conseils beauté
 
 ---
-
 # Apprenez :
 
 - pyenv
@@ -441,13 +495,13 @@ class: beauty, center, middle
 - PyPI
 
 .footnote[.red[*] Surtout ceux là]
+
 ---
 template: inverse
 
 # Performance
 
 ---
-
 ## Le nombre d'interpréteurs alternatifs donne une indication de l'ampleur du «problème».
 
 - HOPE
@@ -476,18 +530,6 @@ class: center, middle
 Exemples : Git, temps tests unitaires, JS.
 
 ---
-
-## La gestion mémoire redevient primordiale
-
-Évolution sur les 20 ans dernières années :
-
-- performance CPU +15-20%
-- performance RAM +2-11%
-
-Relation 1 - 100 entre CPU et RAM.
-
----
-
 ## Python utilise trop de RAM
 
 Taille des structures (64 bits) :
@@ -502,7 +544,19 @@ Taille des structures (64 bits) :
 - dict: 280 + (24*entrée)
 
 ---
+## Le GC évite de gérer la mémoire
 
+Quand on utilise un langage avec *garbage collector*, l’attitude classique est de dire que la mémoire est á «cout nul». Autrement dit, qu'on peut l'utiliser sans se préoccuper des conséquences, le GC étant là pour ça. Ceci est faux, pour au moins 4 raisons :
+
+1. Python ne rend pas toute la mémoire à l'OS. C'est problématique dans le cas de processus long.
+
+2. Plus l'interpréteur gère de mémoire, moins il est performant parce que la *garbage collector* a plus de travail.
+
+3. On peut avoir des fuites mémoires à cause de la fragmentation.
+
+4. Si l'évolution de la performance CPU sur les 20 ans dernières années est au alentour de 15-20%, elle n'est que de +2-11% pour la RAM. Il y a une relation de 1 à 100 entre CPU et RAM. Les caches L3 sont de petites tailles (~8 Mo sur i7). «Cache is the new RAM».
+
+---
 class: center, middle
 
 ## Depuis 15 ans, nous avons changé d'ère :
@@ -510,25 +564,21 @@ class: center, middle
 Mono-coeur &#10140; Multi-coeur
 
 ---
-
 IBM vient de sortir le processeur POWER8 (12 cores - 96 threads) :
 
 ![Default-aligned image](img/power8.png)
 
 ---
-
 Online Labs sort un serveur ARM (4 coeurs - 2Go de RAM) :
 
 ![Default-aligned image](img/online.png)
 
 ---
-
 template: inverse
 
 # Fuite mémoire
 
 ---
-
 ## Type générique + modules C = cauchemar
 
 ```sql
@@ -553,13 +603,11 @@ class: beauty, center, middle
 # Mes conseils beauté
 
 ---
-
 class: center, middle
 
 ## Lancez toutes opérations couteuses en mémoire dans un process à part.
 
 ---
-
 template: inverse
 
 # Conclusion
@@ -575,7 +623,6 @@ class: center, middle
 ## Mais ces défauts se font ressentir au bout de 4 ans.
 
 ---
-
 ## Cas idéal
 
 Pour moi, c'est :
